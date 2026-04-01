@@ -8,11 +8,11 @@ def generate_key_pair(name):
     private_key = key.export_key()
     public_key = key.publickey().export_key()
 
-    # Save private key
+    
     with open(f"{name}_private.pem", "wb") as priv_file:
         priv_file.write(private_key)
 
-    # Save public key
+
     with open(f"{name}_public.pem", "wb") as pub_file:
         pub_file.write(public_key)
 
@@ -23,8 +23,8 @@ def main():
     # Create keys for server
     generate_key_pair("server")
 
-    # Create keys for 5 clients
-    for i in range(1, 2):
+    # Create keys for the 5 clients
+    for i in range(1, 6):
         generate_key_pair(f"client{i}")
 
     print("\nAll keys generated successfully.")
