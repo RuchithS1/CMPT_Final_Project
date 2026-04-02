@@ -15,6 +15,7 @@ PORT = 13000
 BACKLOG = 5
 MAX_TITLE_LEN = 100
 MAX_CONTENT_LEN = 1000000
+
 MENU = """Select the operation:
 1) Create and send an email
 2) Display the inbox list
@@ -22,7 +23,8 @@ MENU = """Select the operation:
 4) Terminate the connection 
 choice: """
 
-
+# Basic framed socket I/O
+# We use a 4-byte big-endian length prefix for every message
 def send_raw(sock, data):
     length = len(data).to_bytes(4, byteorder="big")
     sock.sendall(length + data)
@@ -48,6 +50,8 @@ def recv_raw(sock):
     return recv_exact(sock, length)
 
 
+# Padding helpers for AES ECB
+#########################################
 def pad_bytes(data):
     pad_len = 16 - (len(data) % 16)
     return data + bytes([pad_len]) * pad_len
@@ -68,7 +72,8 @@ def load_rsa_private_key(filename):
     with open(filename, "rb") as f:
         return RSA.import_key(f.read())
 
-
+# RSA / AES helpers
+# ============================================================
 def load_rsa_public_key(filename):
     with open(filename, "rb") as f:
         return RSA.import_key(f.read())
@@ -146,6 +151,10 @@ def recv_secure(sock, sym_key, expected_seq):
     wrapped = aes_decrypt(sym_key, data)
     return parse_secure_packet(sym_key, expected_seq, wrapped)
 
+
+
+# File / parsing helpers
+# ============================================================
 
 def load_users():
     with open("user_pass.json", "r") as f:
@@ -503,6 +512,8 @@ def reap_children():
             break
         except Exception:
             break
+
+
 
 
 def main():
