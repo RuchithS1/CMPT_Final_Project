@@ -1,0 +1,7 @@
+From: client1
+To: client2;client4;client5
+Time and Date: 2026-04-01 19:04:18.050591
+Title: Test
+Content Length: 24
+Content:
+Welcome to CMPT361 class
