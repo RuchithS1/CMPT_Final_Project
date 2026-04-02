@@ -21,7 +21,7 @@ def recv_exact(sock, n):
     while len(data) < n:
         chunk = sock.recv(min(BUFFER_SIZE, n - len(data)))
         if not chunk:
-            raise None
+            return None
         data += chunk
     return data
 
@@ -32,7 +32,10 @@ def recv_raw(sock):
     length = int.from_bytes(length_bytes, byteorder="big")
     if length < 0:
         return None
-    return recv_exact(sock, length)
+    payload = recv_exact(sock, length)
+    if payload is None:
+        return None
+    return payload
 
 #Adding helpers for the AES ECB encryption
 
