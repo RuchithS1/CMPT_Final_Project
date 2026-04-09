@@ -479,13 +479,13 @@ def handle_client(conn, addr, server_private_key, users):
                 )
                 if not ok:
                     break
-            elif choice == "2":
+            elif choice == "2": # inbox list
                 ok, send_seq, recv_seq = handle_display_inbox(
                     conn, username, sym_key, send_seq, recv_seq
                 )
                 if not ok:
                     break
-            elif choice == "3":
+            elif choice == "3":  # display emial
                 ok, send_seq, recv_seq = handle_display_email(
                     conn, username, sym_key, send_seq, recv_seq
                 )
@@ -502,7 +502,7 @@ def handle_client(conn, addr, server_private_key, users):
         conn.close()
 
 
-def reap_children():
+def reap_children(): # cleaning up any finished proceses
     while True:
         try:
             pid, _ = os.waitpid(-1, os.WNOHANG)
@@ -518,13 +518,13 @@ def reap_children():
 
 def main():
     try:
-        users = load_users()
+        users = load_users()  # loading usersfrom ifle 
     except Exception as e:
         print("Failed to load user_pass.json:", str(e))
         sys.exit(1)
 
     ensure_user_dirs(users)
-
+# loads server rsa private key ,c exist if fails 
     try:
         server_private_key = load_rsa_private_key("server_private.pem")
     except Exception as e:
@@ -536,7 +536,7 @@ def main():
     server_socket.listen(BACKLOG)
 
     print("The enhanced server is ready to accept connections")
-
+# waits for new client , returns conn socket + addr ip port
     while True:
         try:
             reap_children()
