@@ -340,7 +340,7 @@ def send_sym_key_to_client(conn, username, sym_key):
     encrypted_key = rsa_encrypt(client_public_key, sym_key)
     send_raw(conn, encrypted_key)
 
-
+#handling email send from client to server
 def handle_send_email(conn, username, sym_key, users, send_seq, recv_seq):
     send_secure(conn, sym_key, send_seq, "Send the email")
     send_seq += 1
@@ -387,7 +387,7 @@ def handle_send_email(conn, username, sym_key, users, send_seq, recv_seq):
         send_seq += 1
         return True, send_seq, recv_seq
 
-
+# shows list ofemails for users
 def handle_display_inbox(conn, username, sym_key, send_seq, recv_seq):
     inbox_text = build_inbox_listing(username)
     send_secure(conn, sym_key, send_seq, inbox_text)
@@ -399,7 +399,7 @@ def handle_display_inbox(conn, username, sym_key, send_seq, recv_seq):
     recv_seq += 1
     return True, send_seq, recv_seq
 
-
+# Display one selected email
 def handle_display_email(conn, username, sym_key, send_seq, recv_seq):
     send_secure(conn, sym_key, send_seq, "the server request email index")
     send_seq += 1
@@ -430,7 +430,7 @@ def handle_display_email(conn, username, sym_key, send_seq, recv_seq):
     send_seq += 1
     return True, send_seq, recv_seq
 
-
+# controls client session,  Authenticate, generate aes key, initilazi seq numbes and wait for client ack.
 def handle_client(conn, addr, server_private_key, users):
     username = None
 
